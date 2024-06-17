@@ -20,7 +20,7 @@ export class CreateUserDto {
     })
     senha: string;
 
-    @IsOptional()
+    //@IsOptional()
     @IsEnum(Role)
     role: number;
 }

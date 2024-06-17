@@ -4,6 +4,7 @@ import { users } from '@prisma/client'; /* TOdos os model criados no Prisma vira
 import { PrismaService } from 'src/prisma/prisma.service';
 import { AuthRegisterDTO } from './dto/auth-register.dto';
 import { UsersService } from 'src/users/users.service';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -53,7 +54,7 @@ export class AuthService {
     async login(email: string, senha: string) {
         const user = await this.prisma.users.findFirst({
             where: {
-                email, senha
+                email
             }
         });
 
@@ -61,6 +62,9 @@ export class AuthService {
             throw new UnauthorizedException("Email ou senha incorretos");
         }
 
+        if (!await bcrypt.compare(senha, user.senha)) {
+            throw new UnauthorizedException('E-mail e/ou senha incorretos.');
+        } /* Segundo argumetno é o dado que tá encriptado */
         return this.createToken(user);
     }
 
