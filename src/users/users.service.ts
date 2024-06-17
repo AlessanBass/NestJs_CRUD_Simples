@@ -14,7 +14,8 @@ export class UsersService {
       data: {
         nome: createUserDto.nome,
         email: createUserDto.email,
-        senha: createUserDto.senha
+        senha: createUserDto.senha,
+        role:createUserDto.role,
       }
     });
   }
@@ -32,12 +33,16 @@ export class UsersService {
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
+    const now = new Date(); // Obtém a data e hora atual
+
     return this.prismaService.users.update({
       where:{id: id},
       data:{
         nome: updateUserDto.nome,
         email: updateUserDto.email,
-        senha:updateUserDto.senha
+        senha:updateUserDto.senha,
+        role: updateUserDto.role,
+        updatedAt:now
       }
     });
   }
